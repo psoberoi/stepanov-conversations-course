@@ -1,0 +1,16 @@
+<project default="build-and-run">
+    <target name="compile">
+        <javac srcdir=".">
+            <classpath>
+                <path location="."/>
+            </classpath>
+        </javac>
+    </target>
+    <target name="run">
+        <java fork="true" classname="Sort64" classpath=".">
+            <jvmarg value="-XX:+AggressiveOpts"/>
+        </java>
+    </target>
+    <target name="build-and-run" depends="compile,run"/>
+</project>
+
