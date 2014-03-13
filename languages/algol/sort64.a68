@@ -1,0 +1,210 @@
+# Thanks to Paul McJones for porting the code to Algol 68 #
+
+BEGIN
+
+    PROC unguardedlinearinsert = (REF [] INT a, INT lim, INT val) VOID:
+    BEGIN
+        INT prev;
+        INT last := lim;
+        prev := last - 1;
+        WHILE val < a[prev] DO
+                a[last] := a[prev];
+                last := prev;
+                prev := prev - 1
+        OD;
+        a[last] := val
+    END;
+
+    PROC unguardedinsertionsort = (REF [] INT a, INT first, INT last) VOID:
+    BEGIN
+        INT i;
+        FOR i FROM first TO last - 1 DO
+            unguardedlinearinsert(a, i, a[i])
+        OD
+    END;
+
+    PROC linearinsert = (REF [] INT a, INT first, INT lim, INT val) VOID:
+    BEGIN
+        INT last := lim;
+        IF val < a[first] THEN
+            WHILE first /= last DO
+                a[last] := a[last - 1];
+                last := last - 1
+            OD;
+            a[first] := val
+        ELSE unguardedlinearinsert(a, last, val)
+    FI
+    END;
+  
+    PROC insertionsort = (REF [] INT a, INT first, INT last) VOID:
+    BEGIN
+        INT i;
+        IF first /= last THEN
+            FOR i FROM first + 1 TO last - 1 DO
+                linearinsert(a, first, i, a[i])
+        OD
+    FI
+    END;
+   
+    PROC medianof3 = (INT a, INT b, INT c) INT:
+        IF a < b THEN
+                IF b < c THEN b
+                ELIF a < c THEN c
+                ELSE a
+                FI
+        ELIF a < c THEN a
+        ELIF b < c THEN c
+        ELSE b
+        FI;
+
+    COMMENT PROC exchange = (REF INT a, REF INT b) VOID: BEGIN INT t; t := a; a := b; b := t END COMMENT
+  
+    PROC unguardedpartition = (REF [] INT a, INT f, INT l, INT pivot) INT:
+    (
+        INT tmp;
+        INT first := f;
+        INT last := l - 1;
+        WHILE a[first] < pivot DO first := first + 1 OD;
+        WHILE pivot < a[last] DO last := last - 1 OD;
+        WHILE first < last DO
+                COMMENT exchange(a[first], a[last]) COMMENT
+                tmp := a[first];
+                a[first] := a[last];
+                a[last] := tmp;
+                first := first + 1; last := last - 1;
+                WHILE a[first] < pivot DO first := first + 1 OD;
+                WHILE pivot < a[last] DO last := last - 1 OD
+        OD;
+        first
+    );
+
+    PROC quicksortloop = (REF [] INT a, INT f, INT l, INT threshold) VOID:
+    BEGIN
+        INT len;
+        INT middle;
+        INT pivot;
+        INT cut;
+        INT first := f;
+        INT last := l;
+        len := last - first;
+        WHILE len > threshold DO
+            middle := first + (last - first) OVER 2;
+            pivot := medianof3(a[first], a[middle], a[last - 1]);
+            cut := unguardedpartition(a, first, last, pivot);
+            IF last - cut < cut - first THEN
+                quicksortloop(a, cut, last, threshold);
+                last := cut
+            ELSE
+                quicksortloop(a, first, cut, threshold);
+                first := cut
+            FI;
+            len := last - first
+        OD
+    END;
+
+    PROC quicksort = (REF [] INT a, INT first, INT last) VOID:
+    BEGIN
+        INT len;
+        INT threshold;
+        INT middle;
+        len := last - first;
+        threshold := 16;
+        IF len <= threshold THEN
+            insertionsort(a, first, last)
+        ELSE
+            quicksortloop(a, first, last, threshold);
+            middle := first + threshold;
+            insertionsort(a, first, middle);
+            unguardedinsertionsort(a, middle, last)
+        FI
+    END;
+
+    PROC rand = REAL: random;
+
+    PROC randomint = (INT m, INT n) INT:
+    (m + ENTIER(rand * (n - m + 1)));
+
+    PROC randomshuffle = (REF [] INT a, INT first, INT last) VOID:
+    BEGIN
+        INT i;
+        INT randomplace;
+        INT tmp;
+        i := first + 1;
+        WHILE i < last DO
+            randomplace := randomint(0, i - first + 1);
+            COMMENT exchange(a[randomplace], a[i]) COMMENT
+            tmp := a[randomplace];
+            a[randomplace] := a[i];
+            a[i] := tmp;
+            i := i + 1
+        OD
+    END;
+   
+    PROC iota = (REF [] INT a, INT n) VOID:
+    BEGIN
+        INT i;
+        FOR i FROM 0 TO n - 1 DO a[i] := i OD
+    END;
+
+    PROC arraycopy = (REF [] INT source, INT sourcefirst, REF [] INT dest, INT destfirst, INT size) VOID:
+    BEGIN
+        INT i;
+        FOR i FROM 0 TO size - 1 DO
+            dest[destfirst + i] := source[sourcefirst + i]
+        OD
+    END;
+
+    PROC sortedarray = (REF [] INT a, INT size) BOOL:
+    (
+        INT i;
+        IF size < 2 THEN TRUE
+        ELSE
+            i := 0;
+            WHILE i < size - 2 & a[i] < a[i + 1] DO i := i + 1 OD;
+            i = size - 2
+        FI
+    );
+
+    PROC timesort = (REF [] INT data, INT length, REF [] INT buffer, INT size) REAL:
+    (
+        INT first;
+        REAL starttime;
+        first := 0;
+        starttime := clock;
+        WHILE first <= length - size DO
+            arraycopy(data, first, buffer, 0, size);
+            quicksort(buffer, 0, size);
+            IF NOT sortedarray(buffer, size) THEN
+                INT i;
+                print("out of order: ");
+                FOR i FROM 0 TO size - 1 DO print(buffer[i]) OD;
+                abort COMMENT panic COMMENT
+            FI;
+            first := first + size
+        OD;
+        clock - starttime
+    );
+
+    INT minsize;
+    INT maxsize;
+    minsize := 8;
+    maxsize := COMMENT 16 * COMMENT 1024 * 1024;
+    BEGIN
+        [0 : maxsize - 1] INT data;
+        [0 : maxsize - 1] INT buffer;
+        INT arraysize;
+        REAL time;
+        
+        print ("size     time"); print(newline);
+
+        iota(data, maxsize);
+        randomshuffle(data, 0, maxsize);
+
+        arraysize := minsize;
+        WHILE arraysize <= maxsize DO
+            time := timesort(data, maxsize, buffer, arraysize);
+            print(arraysize); print("    "); print(time * 1000000000.0 / maxsize); print(newline);
+            arraysize := 2 * arraysize
+        OD
+    END
+END
