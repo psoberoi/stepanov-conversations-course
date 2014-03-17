@@ -2,10 +2,10 @@
 
 BEGIN
 
-    PROC unguardedlinearinsert = (REF [] INT a, INT lim, INT val) VOID:
+    PROC unguardedlinearinsert = (REF [] LONG INT a, INT l, LONG INT val) VOID:
     BEGIN
         INT prev;
-        INT last := lim;
+        INT last := l;
         prev := last - 1;
         WHILE val < a[prev] DO
                 a[last] := a[prev];
@@ -15,38 +15,38 @@ BEGIN
         a[last] := val
     END;
 
-    PROC unguardedinsertionsort = (REF [] INT a, INT first, INT last) VOID:
+    PROC unguardedinsertionsort = (REF [] LONG INT a, INT f, INT l) VOID:
     BEGIN
         INT i;
-        FOR i FROM first TO last - 1 DO
+        FOR i FROM f TO l - 1 DO
             unguardedlinearinsert(a, i, a[i])
         OD
     END;
 
-    PROC linearinsert = (REF [] INT a, INT first, INT lim, INT val) VOID:
+    PROC linearinsert = (REF [] LONG INT a, INT f, INT l, LONG INT val) VOID:
     BEGIN
-        INT last := lim;
-        IF val < a[first] THEN
-            WHILE first /= last DO
+        INT last := l;
+        IF val < a[f] THEN
+            WHILE f /= last DO
                 a[last] := a[last - 1];
                 last := last - 1
             OD;
-            a[first] := val
+            a[f] := val
         ELSE unguardedlinearinsert(a, last, val)
     FI
     END;
   
-    PROC insertionsort = (REF [] INT a, INT first, INT last) VOID:
+    PROC insertionsort = (REF [] LONG INT a, INT f, INT l) VOID:
     BEGIN
         INT i;
-        IF first /= last THEN
-            FOR i FROM first + 1 TO last - 1 DO
-                linearinsert(a, first, i, a[i])
+        IF f /= l THEN
+            FOR i FROM f + 1 TO l - 1 DO
+                linearinsert(a, f, i, a[i])
         OD
     FI
     END;
    
-    PROC medianof3 = (INT a, INT b, INT c) INT:
+    PROC medianof3 = (LONG INT a, LONG INT b, LONG INT c) LONG INT:
         IF a < b THEN
                 IF b < c THEN b
                 ELIF a < c THEN c
@@ -59,9 +59,9 @@ BEGIN
 
     COMMENT PROC exchange = (REF INT a, REF INT b) VOID: BEGIN INT t; t := a; a := b; b := t END COMMENT
   
-    PROC unguardedpartition = (REF [] INT a, INT f, INT l, INT pivot) INT:
+    PROC unguardedpartition = (REF [] LONG INT a, INT f, INT l, LONG INT pivot) INT:
     (
-        INT tmp;
+        LONG INT tmp;
         INT first := f;
         INT last := l - 1;
         WHILE a[first] < pivot DO first := first + 1 OD;
@@ -78,11 +78,11 @@ BEGIN
         first
     );
 
-    PROC quicksortloop = (REF [] INT a, INT f, INT l, INT threshold) VOID:
+    PROC quicksortloop = (REF [] LONG INT a, INT f, INT l, INT threshold) VOID:
     BEGIN
         INT len;
         INT middle;
-        INT pivot;
+        LONG INT pivot;
         INT cut;
         INT first := f;
         INT last := l;
@@ -102,7 +102,7 @@ BEGIN
         OD
     END;
 
-    PROC quicksort = (REF [] INT a, INT first, INT last) VOID:
+    PROC quicksort = (REF [] LONG INT a, INT first, INT last) VOID:
     BEGIN
         INT len;
         INT threshold;
@@ -124,14 +124,14 @@ BEGIN
     PROC randomint = (INT m, INT n) INT:
     (m + ENTIER(rand * (n - m + 1)));
 
-    PROC randomshuffle = (REF [] INT a, INT first, INT last) VOID:
+    PROC randomshuffle = (REF [] LONG INT a, INT f, INT l) VOID:
     BEGIN
         INT i;
         INT randomplace;
-        INT tmp;
-        i := first + 1;
-        WHILE i < last DO
-            randomplace := randomint(0, i - first + 1);
+        LONG INT tmp;
+        i := f + 1;
+        WHILE i < l DO
+            randomplace := randomint(0, i - f + 1);
             COMMENT exchange(a[randomplace], a[i]) COMMENT
             tmp := a[randomplace];
             a[randomplace] := a[i];
@@ -140,13 +140,13 @@ BEGIN
         OD
     END;
    
-    PROC iota = (REF [] INT a, INT n) VOID:
+    PROC iota = (REF [] LONG INT a, INT n) VOID:
     BEGIN
         INT i;
         FOR i FROM 0 TO n - 1 DO a[i] := i OD
     END;
 
-    PROC arraycopy = (REF [] INT source, INT sourcefirst, REF [] INT dest, INT destfirst, INT size) VOID:
+    PROC arraycopy = (REF [] LONG INT source, INT sourcefirst, REF [] LONG INT dest, INT destfirst, INT size) VOID:
     BEGIN
         INT i;
         FOR i FROM 0 TO size - 1 DO
@@ -154,7 +154,7 @@ BEGIN
         OD
     END;
 
-    PROC sortedarray = (REF [] INT a, INT size) BOOL:
+    PROC sortedarray = (REF [] LONG INT a, INT size) BOOL:
     (
         INT i;
         IF size < 2 THEN TRUE
@@ -165,15 +165,16 @@ BEGIN
         FI
     );
 
-    PROC timesort = (REF [] INT data, INT length, REF [] INT buffer, INT size) REAL:
+    PROC timesort = (REF [] LONG INT data, INT length, REF [] LONG INT buffer, INT size) REAL:
     (
         INT first;
-        REAL starttime;
+        REAL starttime, stoptime;
         first := 0;
         starttime := clock;
         WHILE first <= length - size DO
             arraycopy(data, first, buffer, 0, size);
             quicksort(buffer, 0, size);
+            stoptime := clock;
             IF NOT sortedarray(buffer, size) THEN
                 INT i;
                 print("out of order: ");
@@ -182,16 +183,16 @@ BEGIN
             FI;
             first := first + size
         OD;
-        clock - starttime
+        stoptime - starttime
     );
 
     INT minsize;
     INT maxsize;
     minsize := 8;
-    maxsize := COMMENT 16 * COMMENT 1024 * 1024;
+    maxsize := COMMENT 16 * COMMENT 256 * 1024;#
     BEGIN
-        [0 : maxsize - 1] INT data;
-        [0 : maxsize - 1] INT buffer;
+        [0 : maxsize - 1] LONG INT data;
+        [0 : maxsize - 1] LONG INT buffer;
         INT arraysize;
         REAL time;
         
