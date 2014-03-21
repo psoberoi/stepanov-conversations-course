@@ -19,7 +19,7 @@ def main():
 
   array_size = min_size
   lg = 3
-  while array_size < max_size:
+  while array_size <= max_size:
     time = time_sort(data, buffer, array_size)
     print "  [Python] %12d %6d %6.1f" % (array_size, time // max_size, time / (max_size * lg))
     array_size *= 2
