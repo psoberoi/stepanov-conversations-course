@@ -1,0 +1,131 @@
+---------------
+Lecture 1
+
+Is programming a discipline?
+- clearly there is a discipline called "computer science"
+- is it the same as programming?
+  - there are several great computer scientists who never wrote code
+  - and there are good programmers whp don't know computer science
+    - does Ken Thompson know type theory?
+    - does he follow research on complexity theory?
+  - common view: programming is not a discipline, just grunt work
+
+Claim: programming is a discipline
+- a wonderful, glorious discipline
+- a view not commonly held or stated
+- for example, Ken Thompson stated, "it's all solved. study newer emerging
+  fields instead"
+- not just great programming; day-to-day programming is a discipline
+
+Have other people held this view?
+- Once upon a time, there people who held this view
+- 1960-70
+- Dijkstra: "The Humble Programmer"
+- Nicklaus Wirth: "Alex, write the code yourself. Let your students write
+  papers."
+
+Great books
+- Wirth, Systematic Programming
+- Wirth, Algorithms + Data Structures = Programs
+- Dijkstra, Discipline of Programming
+- Dijkstra, EWD
+- Dahl, Dijkstra, Hoare, On Structured Programming
+- Knuth, The Art of Computer Programming
+
+Why classic books?
+- Good taste
+- Should aspire to them
+
+Knuth
+- Bible
+  - Starts with math for programmers - Discrete Mathematics
+  - Memory Management
+  - 2: Random number generation
+  - 2: Arithmetic algorithms
+  - 3: Sorting & Searching
+- then... TeX, Metafont
+- and... Literate Programming (web)
+- Stanford Graph Base
+- No progrmaming language - MIX, MMIX
+- Need to know computer architecture
+  - Hennessey & Patterson, Computer Architecture
+- After Knuth: belief that the computer must be hidden
+
+Computer Science
+- Created out of Math and Electrical Engineering
+- Europe: "Informatics"
+- If a discipline has science after its name...
+- 1965-68: departments founded by programmers
+- No split between CS and programmers
+- Knuth, at symposium on theoretical cs: All of you should write code during
+  your sabbatical. You should also consider writing code between your
+  sabbaticals...
+
+Programmer?
+- No, I'm an architect
+- Programmer has become a disreputable title
+- Earlier, "analyst"
+- No! - We should be proud to be programmers
+
+Profession
+- Canon
+- Ethics
+- Mastery
+
+ACM
+- Used to be a professional organization for programmers
+- Was highjacked by CS professors
+- Used to publish code
+  - ACM Collection of Algorithms
+    - was taken over by numerical analysts
+- We need a professional organization
+  - with journals
+- Programmers often descrive themselves as Artists - by which they mean they
+  don't have to follow any rules. That is bad for the field, and bad for them.
+  We need t be professional and "boring" like lawyers
+
+What is Programming?
+- What unites us?
+  - Doctors: "Health"
+  - Lawyers: "Justice"
+  - Us?
+- Write lots of code?
+- for digital computers?
+- to solve problems
+- modelling reality?
+- map problem into bits
+
+BITS! - 0s and 1s
+  - great discovery
+  - Leibnitz
+  - Turing
+- real-world problem -> mathematics -> bits
+- manipulate the bits with code
+- bits are hidden these days
+  - we use "objects"
+  - can't even get to bits on modern platforms
+- portability?
+  - no, bits are the same everywhere
+  - c abstract machine
+    - sequence of bytes
+
+We must study real machines
+- individual brilliant people can make mistakes
+- but eventually bad architectures die out
+- market dynamics
+- intel reacts to customer demands
+  - we we must take it seriously
+- Late 90s - x86 is dead, long live itanium
+
+Programmer needs to know the whole stack
+- problem
+- math
+- bits
+- algorithms
+- compilers
+- processors
+- it's wonderful!
+
+---------------
+Lecture 2
+
