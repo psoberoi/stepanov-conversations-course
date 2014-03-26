@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cstddef>
+#include <cinttypes>
 #include <chrono>
 #include <vector>
 #include <numeric>
@@ -43,7 +44,7 @@ int main() {
   int lg = 3;
   for (size_t array_size = min_size; array_size <= max_size; array_size *= 2) {
     uint64_t time = time_sort(data_begin, data_end, buffer_begin, array_size);
-    printf("     [C++] %12lu %6zu %6.1f\n", array_size, time / max_size, (double)time / (max_size * lg));
+    printf("     [C++] %12zd %6" PRIu64 " %6.1f\n", array_size, time / max_size, (double)time / (max_size * lg));
     ++lg;
   }
 }
