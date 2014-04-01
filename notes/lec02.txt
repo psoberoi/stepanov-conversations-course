@@ -1,0 +1,133 @@
+Lecture 2
+
+Last lecture: Programming is about bits
+
+This was not always self evident
+- bits were invisible for many years
+- bytes for decades
+- the abstract machine model took along time to emerge
+
+Bits not self-evident
+- it was clear that computers must operate on numbers
+- but how should numbers be represented?
+- Knuth, 1968 - support both binary and decimal
+- many architectures supported BCD, including x86
+- word sizes were not powers of two - all kinds
+- cray: 60 bit words
+
+Popular word sizes: 36 bits and 60 bits
+- divisible by 6
+- 6 bits enough to encode English characters
+- but 6-bit "bytes" were not addressable
+- IBM STRETCH: bit addressable
+
+Mid-60s: IBM 360
+- first architecture that spanned a family of machines
+- great team of people
+- c machine model a result of IBM 360
+  - byte addressable
+  - full-blown pointers
+- IBM Principles of Operation
+  - Brooks and Blaauw
+
+Revolutionary
+- lots of clones
+- copied widely internationally
+- including in the USSR (allegedly aided by the CIA)
+- slowly the "exotic" word sizes disappeared
+
+However, no access to this low level abstract machine
+- all serious programming done in assembly
+  - need access to bits
+  - performance
+
+1953: John Backus: Formula Translation
+- Wrote memo to mgmt, asked for large team (10 best people)
+- Due diligence: mgmt asked von Neumann
+  - terrible idea
+  - why waste valuable computer time on this?
+  - just use "girls"
+- IBM goes ahead anyway
+- History very well documented by Paul McJones
+
+FORTRAN compiler
+- First
+- They had to invent all the basic ideas
+  - "compiler", "basic block", "optimization", "frequency" hints
+  - conditional statement, do statement, arrays
+  - primitives derived from hardware instructions
+- Goal: as fast as hand-written code
+- took 4 years (released in 1957)
+- very efficient code, right from the start
+- very successful from the start - physicists embraced it
+
+FORTRAN's success led to the notion of "portability"
+- Initially only ran on IBM 704
+- Other companies realized that the language was not machine specific
+- They implemented their own implementations to attract physicists
+- Physicists could freely move code from machine to machine
+- They were in a state of bliss
+- No other portable software for quite a while
+
+But FORTRAN was widely maligned
+- Computer scientists thought it was a horrible language
+- Dijkstra, Hoare - wrote nasty things
+- Physicists used it anyway, and still do
+- It was, and remains, a great achievement
+
+FORTRAN v/s Smalltalk style
+- FORTRAN - arrays
+- Smalltalk - lots of small objects, all alike
+- Both styles possible in most languages
+  - with the resulting performance characteristics
+
+FORTRAN supported both ints and floating point
+- von Neumann - no need for floating point - any mathematician should be able to normalize the result in their head
+  - but very few mathematicians were like von Neumann
+  - hardware manufacturers supported floating point
+
+Integer representation
+- decimal or binary
+- even after binary became common, how to represent sign
+- ints were always signed
+- Two's Complement
+- Signed Magnitude
+- One's Complement
+- signed magnitude and 1's complement had two zeros
+  - many violent arguments about zeros
+- integer semantics still not quite understood, even today
+- integer sizes were different across machines, of course
+- floating point eventually standardized
+  - Kahan
+  - no such luck for integers...
+
+Languages
+- FORTRAN -> II -> IV -> 77 -> 90 -> ...
+- Algol 60
+  - Int, Float
+- PL/1
+  - universal language
+  - systems programming needs, in a HLL
+  - large and unwieldy
+  - Multics, big failure
+    - but, led to Ken and Dennis
+- some access to bits
+  - PL/S
+  - BLISS
+
+C
+- UNIX initial version: assembly
+- not portable...
+- BCPL, B, C
+- Dennis was a genius
+  - C ugly, not easy to parse
+  - unlike Wirth languages (Pascal, Modula-2)
+  - But: came up with a machine model roughly matching IBM 360
+
+Revolutionary
+- At that time, designers were convinced that the job of the language was to hide the machine
+- as late as ~1985, in a a Wirth/Knuth interview:
+  - Wirth: A pointer type should not have < defined on it
+  - obviously
+  - Knuth: So if you have a list of pointers to records, you cannot use binary search?
+

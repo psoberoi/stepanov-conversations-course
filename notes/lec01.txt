@@ -5,7 +5,7 @@ Is programming a discipline?
 - clearly there is a discipline called "computer science"
 - is it the same as programming?
   - there are several great computer scientists who never wrote code
-  - and there are good programmers whp don't know computer science
+  - and there are good programmers who don't know computer science
     - does Ken Thompson know type theory?
     - does he follow research on complexity theory?
   - common view: programming is not a discipline, just grunt work
@@ -46,9 +46,9 @@ Knuth
 - then... TeX, Metafont
 - and... Literate Programming (web)
 - Stanford Graph Base
-- No progrmaming language - MIX, MMIX
+- No programming language - MIX, MMIX
 - Need to know computer architecture
-  - Hennessey & Patterson, Computer Architecture
+  - Hennessy & Patterson, Computer Architecture
 - After Knuth: belief that the computer must be hidden
 
 Computer Science
@@ -74,13 +74,13 @@ Profession
 
 ACM
 - Used to be a professional organization for programmers
-- Was highjacked by CS professors
+- Was hijacked by CS professors
 - Used to publish code
   - ACM Collection of Algorithms
     - was taken over by numerical analysts
 - We need a professional organization
   - with journals
-- Programmers often descrive themselves as Artists - by which they mean they
+- Programmers often describe themselves as Artists - by which they mean they
   don't have to follow any rules. That is bad for the field, and bad for them.
   We need t be professional and "boring" like lawyers
 
@@ -92,12 +92,12 @@ What is Programming?
 - Write lots of code?
 - for digital computers?
 - to solve problems
-- modelling reality?
+- modeling reality?
 - map problem into bits
 
 BITS! - 0s and 1s
   - great discovery
-  - Leibnitz
+  - Leibniz
   - Turing
 - real-world problem -> mathematics -> bits
 - manipulate the bits with code
@@ -113,7 +113,7 @@ We must study real machines
 - individual brilliant people can make mistakes
 - but eventually bad architectures die out
 - market dynamics
-- intel reacts to customer demands
+- Intel reacts to customer demands
   - we we must take it seriously
 - Late 90s - x86 is dead, long live itanium
 
