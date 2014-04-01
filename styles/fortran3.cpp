@@ -69,6 +69,7 @@ bool myisspace(char x) {
 pair<prefix_t, pchar_t> next_prefix(pchar_t first, pchar_t last) {
   prefix_t prefix = 0;
   first = find_if(first, last, [](char x){ return !myisspace(x); });
+  if (first == last) return {0, first};
   auto offset = sizeof(prefix_t);
 
   while (first != last && !myisspace(*first)) {

@@ -45,6 +45,11 @@ struct word_t {
     first = current - base;
     prefix = 0;
 
+    if (first == size) {
+        last = first;
+        return;
+    }
+
     while (current != base + size && !isspace(*current)) {
       if (offset) {
         ++first;
