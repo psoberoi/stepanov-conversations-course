@@ -1,4 +1,4 @@
-#include <cstdint>
+#include <stdint.h>
 #include <cstddef>
 #include <algorithm>
 #include <iostream>
@@ -16,6 +16,38 @@
 #define BinaryOperation typename
 #define RandomAccessIterator typename
 
+#if __cplusplus <= 199711L
+
+#include <time.h>
+
+class timer {
+private:
+    clock_t start_time;
+public:
+    typedef double result_type;
+
+    void start() {
+        start_time = clock();
+    }
+
+    result_type stop() {
+        return 1000000000. * ((clock() - start_time) / double(CLOCKS_PER_SEC));
+    }
+};
+
+template<class ForwardIterator, class T>
+void iota(ForwardIterator first, ForwardIterator last, T value)
+{
+    while(first != last) {
+        *first++ = value;
+        ++value;
+    }
+}
+
+#else
+
+#include <chrono>
+
 class timer {
 private:
     std::chrono::time_point<std::chrono::high_resolution_clock> start_time;
@@ -30,9 +62,13 @@ public:
     }
 };
 
+using std::iota;
+
+#endif
+
 template <RandomAccessIterator I>
 void random_iota(I first, I last) {
-  std::iota(first, last, 0);
+  iota(first, last, 0);
   std::random_shuffle(first, last);
 }
 
