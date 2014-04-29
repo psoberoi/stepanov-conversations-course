@@ -1,0 +1,126 @@
+Lecture 4
+
+Leslie Lamport just awarded Turing award
+- great computer scientist
+- distributed computing
+  - foundational work on consensus, causality
+
+Sort benchmark
+- goal was not to write the best sort, but to write a simple, plausible benchmark
+- tried hard to not put any language at a disadvantage
+- code was close to what would be written by a typical good programmer
+
+Programming Styles
+- Right after FORTRAN appeared, portable libraries appeared
+- Physics oriented, numerical libraries
+- Very few non-numeric libraries
+- At the same time, other academic languages appeared
+  - McCarthy: Lisp 1.5, other lisps
+  - Ken Iverson: APL (A Programming Language)
+    - Turing award
+    - Notation as a Tool of Thought
+  - Alan Kay: Smalltalk
+- Each language claimed that it was great for different reasons
+  - Lisp: beautiful, simple syntax
+  - APL: rich, powerful notation
+  - Smalltalk: object oriented, whatever that means
+
+Undeniable that each of these languages was useful and highly productive
+- at least in some domains (AI, financial modelling, teaching)
+- Why were these languages successful?
+  - was it due to the claimed advantages?
+  - they were all very different from each other
+- What was common between them?
+  - they were interpreted...
+- They had higher level data structures
+  - lists, arrays
+  - and algorithms for operating on them
+  - not always well thought out, but still usable
+- They had the ability to produce applications rapidly by representing problem domain in the available data structures
+- But they remained niche languages. Not commercially successful. Why?
+- Even in the open source community, where anyone can use their favorite language, these languages are rare.
+- Why?
+
+Apparently it was not possible to produce effective systems with these languages
+- Too slow, not efficient
+- Guy Steele Master's thesis: Rabbit
+  - can compile scheme and make it fast
+  - never realized, science fiction
+- Many claims that they can be efficient, but it never happened
+- Why?
+
+These languages were very far from the hardware
+- Primitive operations did not map to hardware
+- Could do things like save the complete state of the computation and jump back to it
+- People even built special-purpose hardware
+- Alex: I bought it
+  - and I taught students that scheme is the future
+  - fortunately my students are not asking for their money back
+- Instructive that a large community could wholeheartedly believe something
+- which wasn't apparently true
+
+Many good ideas came from these languages, but so did many bad ones
+- and these ideas are affecting you today, in any language
+- Fortran programmers used arrays
+  - good match to what the hardware provided
+- These languages introduced advanced data structures
+- lisp had lists
+  - vectors too, but they were not idiomatic
+  - lists are fundamentally flawed
+  - more flawed now than earlier
+  - especially if you use them as lists
+    - when you sort a list you shuffle it
+    - every advance is a cache miss
+
+Sets & Maps
+- came from Smalltalk
+- cell-based, therefore spread over memory
+  - terrible cache behavior
+- STL is responsible for bringing these to C++
+- it's common these days to have sets of sets
+- such code is frequently 10-100x slower than arrays
+
+Counting Bigrams
+- words are sequences of non whitespace characters
+- no normalization
+- typical implementation:
+  - keep a set of words
+  - a bigram is a pair of iterators into the set
+  - map of bigram -> count
+  - update that map as we read the file
+  - at the end, construct a set of iterators into the map of counts
+  - use a comparator that compares counts
+  - iterate over that set to find the most common bigrams
+- smalltalk.cpp
+
+"FORTRAN"-like implementation
+- store all bigrams in an array
+- sort the array, count adjacent equal rows
+- store counts and bigrams in another array
+- sort that, and read out the range desired
+- same as the UNIX "sort | uniq -c | sort -n" idiom
+- we are storing the entire array in memory
+  - the previous implementation wasted even more memory on bookkeeping
+  - advanced data structures are very memory inefficient
+- cut off words at 8 bytes, store them in a uint64_t
+  - not functionally equivalent, but good enough
+  - this is what programmers typically did in the "old days"
+- fortran3.cpp
+  - using mmap instead of iostreams
+  - myisspace: faster than isspace!
+    - no i18n
+    - customized order of character comparison
+- measure - don't assume what's given is good
+- concepts, type functions
+
+FORTRAN version over 10x faster
+- 10X!!
+- Why?
+- The code in smalltalk.cpp is quite typical
+- Why is it so slow? Is all the code we typically write so slow?
+- Both are C++
+
+The data structures make the difference
+- Why are lists and maps so slow?
+- Are Strings always appropriate? You must think.
+

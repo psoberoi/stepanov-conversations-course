@@ -1,0 +1,81 @@
+Lecture 3
+
+Integers
+- 2s complement is de facto standard in hardware
+- other representations still important
+  - how to represent variable length integers
+- Endian-ness
+  - IBM 360: Little Endian
+  - Intel: Big Endian
+- Both encodings are legitimate
+  - There is data stored in both formats
+  - We must be able to handle both
+
+We tend as a community to develop parties based on insignificant things
+- Editors: vim/emacs/bbedit/...
+- Similarly with encodings
+- Big endian people are not bad people
+
+Alignment
+- byte addressable, but frequently words could only be fetched from aligned address
+- word size: "natural size" of machine, data path size, register size
+- RISC architectures required alignment
+
+Intel Architecture
+- CISC
+- Universally agreed to be "terrible"
+  - Including by Intel
+- Intel (and others) heavily invested in Itanium
+  - which was a complete failure
+  - overly complicated, late
+- AMD saved x86 by extending it to 64 bits
+- Intel was able to make x86 very competitive via microarchitectural cleverness
+- Unaligned loads very efficiently implemented
+  - Exploiting this can lead to significant performance gains
+
+Offset based integer representation
+- great for sorting
+- no longer in hardware, but still useful to know as an algorithmic technique
+  - this applies to all other encoding techniques
+
+Benchmark
+- simple sorting benchmark
+- intended to compare low level algorithmic code
+- C++ & Java - very similar at the language level
+  - pointers <--> array + offset
+  - class with public static methods
+  - int64_t <--> long
+- Python - again, cosmetic changes
+
+Java
+- within 15-20% of C++
+- Javatran
+- Java used to be slow, but no longer
+
+Python
+- slow - about 50-80x slower than C++
+- don't want to write inner loops in python
+- does not mean Python is not a useful language
+  - just not for high-performance inner loops
+  - great for higher level code
+- PyPy - about 10x slower
+  - big improvement, but nowhere close to C++
+
+Languages don't matter
+- We are going to stop switching languages
+- It's the data structures that matter
+- If we used the data structures from the Python interpreter in C++, it would be slow
+- Use arrays
+  - and remember that they are no longer random access
+
+Experimenting with the sort code
+- compare with std::sort - about the same
+- can do the experiment really fast
+- heap sort
+  - in about 1980, considered the default sort
+  - many good properties, easy to code, reasonably fast, in place
+  - quicksort: has bad worst case
+  - merge sort: requires extra memory
+- heap sort is a bit slower for small arrays
+- but dramatically slower for large arrays
+  - why?
