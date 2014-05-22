@@ -2,12 +2,15 @@
 fn unguarded_linear_insert(array: &mut [u64], last: uint, value: u64) {
   let mut previous = last - 1;
   let mut current = last;
-  while value < array[previous] {
-    array[current] = array[previous];
-    previous -= 1;
-    current -= 1;
+  unsafe {
+    let array_ptr = array.as_mut_ptr();
+    while value < *array_ptr.offset(previous as int) {
+      *array_ptr.offset(current as int) = *array_ptr.offset(previous as int);
+      previous -= 1;
+      current -= 1;
+    }
+    *array_ptr.offset(current as int) = value;
   }
-  array[current] = value;
 }
 
 fn unguarded_insertion_sort(array: &mut [u64], first: uint, last: uint) {
@@ -53,16 +56,19 @@ fn median_of_3(a: u64, b: u64, c: u64) -> u64 {
 fn unguarded_partition(array: &mut [u64], first: uint, last: uint, pivot: u64) -> uint {
   let mut first = first;
   let mut last = last - 1;
-  while array[first] < pivot { first += 1; }
-  while pivot < array[last] { last -= 1; }
-  while first < last {
-    let tmp = array[first];
-    array[first] = array[last];
-    array[last] = tmp;
-    first += 1;
-    last -= 1;
-    while array[first] < pivot { first += 1; }
-    while pivot < array[last] { last -= 1; }
+  unsafe {
+    let array_ptr = array.as_mut_ptr();
+    while *array_ptr.offset(first as int) < pivot { first += 1; }
+    while pivot < *array_ptr.offset(last as int) { last -= 1; }
+    while first < last {
+      let tmp = *array_ptr.offset(first as int);
+      *array_ptr.offset(first as int) = *array_ptr.offset(last as int);
+      *array_ptr.offset(last as int) = tmp;
+      first += 1;
+      last -= 1;
+      while *array_ptr.offset(first as int) < pivot { first += 1; }
+      while pivot < *array_ptr.offset(last as int) { last -= 1; }
+    }
   }
   return first;
 }
