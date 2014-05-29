@@ -37,7 +37,7 @@ namespace Stepanov.QuickSort
                  first += size;
              }
 
-             return (long)(stopwatch.Elapsed.TotalMilliseconds * 10000000L);
+             return (long)(stopwatch.Elapsed.TotalMilliseconds * 1000000L);
         }
 
          void Run() {
