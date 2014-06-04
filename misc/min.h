@@ -1,8 +1,12 @@
 // given objects a and b of the same type
 // and some strict weak ordering cmp,
+// returns a if cmp(a, b),
+//         b if cmp(b, a),
+//         a otherwise.
+//
 // returns b if cmp(b, a), a otherwise.
 
-#define StrictWeakOrdering typename
+#include "concepts.h"
 
 template <typename T, StrictWeakOrdering Cmp>
 T& min(T& a, T& b, Cmp cmp) {
@@ -31,4 +35,6 @@ void sort(T& a, T& b, Cmp cmp) {
 }
 
 // min, swap, linear search (aka find_if)
+
+
 

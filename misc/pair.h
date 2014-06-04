@@ -1,12 +1,10 @@
+#include "concepts.h"
+
 // T1 and T2 must be:
 //   copyable
 //   assignable
 //   default constructable
 // i.e. Semiregular
-
-#define Regular typename
-#define Semiregular typename
-#define TotallyOrdered typename
 
 template <Semiregular T1, Semiregular T2>
 struct pair {

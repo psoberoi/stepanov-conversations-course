@@ -1,3 +1,5 @@
+#include "concepts.h"
+
 #include <cstddef>
 #include <algorithm>
 
@@ -6,11 +8,6 @@
 //   assignable
 //   default constructable
 // i.e. Semiregular
-
-#define Regular typename
-#define Semiregular typename
-#define TotallyOrdered typename
-#define InputIterator typename
 
 // why not reference_type?
 
@@ -26,7 +23,7 @@ struct array {
   typedef const_pointer const_iterator;
 
   T data[k];
-  
+
   reference operator[](size_type i) { return *(begin() + i); }
   const_reference operator[](size_type i) const { return *(begin() + i); }
 
