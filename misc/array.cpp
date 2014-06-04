@@ -28,7 +28,7 @@ struct second_iterator_basis {
   state_type state() const { return position; }
 };
 
-template <ForwardIterator I>
+template <RandomAccessIterator I>
 using IterSecond = iterator<second_iterator_basis<I>>;
 
 template <InputIterator I>
