@@ -1,0 +1,146 @@
+Lecture 5
+
+Guest Lecture: Sean Parent
+- Apple: Motorola -> PowerPC transition
+- Adobe: Photoshop
+  - Actions
+  - UI Layout System (Eve)
+  - Declarative UI Logic System (Adam)
+- Adobe: Software Technology Lab
+  - Manager of Alex and Paul
+  - Elements of Programming
+    - Parser for language used in EoP
+    - Language Appendix
+
+3 Goals for Better Code
+- Not Rules
+- Not Guidelines
+- We may not be able to achieve them every time
+- They may not make sense in all cases
+- But they are good things to aim for
+
+Goal 1: No Raw Loops
+- Example: long function with multiple complex loops
+- Hard to reason about
+  - correctness
+  - behavior
+  - performance
+- Instead: Use an existing algorithm
+- Else: Implement a standard algorithm
+  - contribute to library
+    - preferably open source
+- Else: Invent a new algorithm
+  - write a paper
+
+Example: Slide a contiguous selection up or down
+- use rotate
+
+Example: Coalesce disjoint selection
+- use stable_partition
+
+Back to previous messy example
+- first loop: find_if followed by rotate
+- even better: lower_bound + rotate
+- next loop: second part of slide
+- could combine both into a single slide operation
+- very simple
+- could now envision disjoint selections
+
+Other tips
+- use a range library like ASL
+- use a suitable variant of a standard algorithm rather than a lambda
+  - find_if, find_not_if, find_greater_than, ...
+- look for interface symmetry
+- range for: OK, if very simple loop
+- lambdas: use for predicates, projections, comparisons, but keep them short
+
+People claim: but real-world algorithms are messy
+- not true
+- example implementation of stable_partition
+
+Goal 2: No Raw Synchronization Primitives
+- you'll get it wrong
+- example of buggy COW object in Photoshop
+  - crash if Photoshop ran for three months
+
+Amdahl's Law
+- parallel performance is bound by amount of serial work
+- limits performance
+- avoid serialization
+
+CSP: Continuous Sequential Processes
+- Tony Hoare, 80s
+- much better
+- no standard tasking model yet
+- maybe C++14
+- Windows thread pool, PPL, TBB, Grand Central Dispatch
+
+Futures
+- promise to produce a result in the future
+- get() blocks. Bad.
+
+Need dependent tasks, joins
+- GCD: queues, groups
+- PPL: chained tasks
+- TBB: flow graphs
+- not the same as blocking - no thread actively waiting
+
+Tips
+- concurrent queue easy to implement in C++11
+- use std::packaged_task for marshalling results & exceptions
+
+Goal 3: No Raw Pointers
+- What is a raw pointer?
+- Pointer with ownership semantics
+  - eg. int*, unique_ptr<int>, shared_ptr<int>
+  - a smart pointer is also a raw pointer
+
+Why do we use raw pointers?
+- runtime variable size (polymorphism, containers)
+- stability requirements
+- communication between threads
+- eliding copy - immutable objects, COW, move
+- PIMPL
+
+However...
+- Containers: STL uses non-intrusive containers
+  - but people still use intrusive container for hierarchies
+  - ASL implements a non-intrusive forest library
+- PIMPL and Copy optimizations can be trivially wrapped in a class
+- Synchronization: see goal 2
+- Remaining: runtime polymorphism
+
+Textbook solution for polymorphism: base class with virtual method
+- Array of pointers to objects, because objects are variable sized
+- Easy to write exception-unsafe code with pointers
+- Changed semantics of copy/comparison/assignment
+  - comparison will compare pointers by default
+  - copy/assignment will make a shallow copy; objects will share parts
+- Modifying one object could change another
+- Breaks the ability to reason about code locally
+- "A Shared Pointer is as good as a Global Variable"
+
+Solutions
+- use an internal private templated subclass
+  - use global draw function; don't require inheritance
+  - see lecture for code
+- use pointers to const objects (everywhere)
+  - do mutable operations even make sense on polymorphic objects?
+- this gives us proper value semantics
+  - allows making copies without sharing parts
+  - allows passing objects to threads
+  - allows nesting objects
+
+If you do this your code will be:
+- easier to reason about
+- composable
+- general
+- correct
+- efficient
+
+Alex's concluding remarks
+- Sean gets it
+- Discuss code with each other
+- Don't think you are brilliant, that you know everything
+- It's OK to write awful code - we all do. We must discuss it to improve it.
+- The way we learn is by improving our bad code by rewriting it
