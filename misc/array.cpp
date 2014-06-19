@@ -1,7 +1,7 @@
 #include "array.h"
 #include "pair.h"
 #include "concepts.h"
-#include "iter.h"
+#include "iterator_adapter.h"
 
 #include <iostream>
 #include <numeric>
