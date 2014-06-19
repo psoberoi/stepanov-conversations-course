@@ -5,6 +5,7 @@
 // Concept IteratorBasis
 // - semiregular
 // - state_type, value_type, reference, pointer, iterator_category
+// - state_type is regular
 // - deref() -> reference
 // - increment() -> void
 // - state() -> state_type
@@ -29,6 +30,11 @@ struct iterator {
   iterator() {}
   iterator(state_type x) : basis{x} {}
 
+  template <typename T>
+  iterator(const T& x) : basis{x} {}
+
+  state_type state() const { return basis.state(); }
+
   reference operator*() const { return basis.deref(); }
 
   pointer operator->() const { return &(**this); }
@@ -44,10 +50,9 @@ struct iterator {
     return tmp;
   }
 
-  // add a state() member function to iterator?
   friend
   bool operator==(const iterator& x, const iterator& y) {
-    return x.basis.state() == y.basis.state();
+    return x.state() == y.state();
   }
 
   friend
@@ -68,7 +73,7 @@ struct iterator {
     return tmp;
   }
 
-  // random access iterator
+  // for random access iterator
 
   iterator& operator+=(difference_type i) {
     basis.offset(i);
@@ -89,7 +94,6 @@ struct iterator {
     return x.basis.difference(y.basis);
   }
 
-  // should this be a friend function?
   iterator operator-(difference_type i) {
     return *this  + (-i);
   }
@@ -106,8 +110,7 @@ struct iterator {
 
   friend
   bool operator<(const iterator& x, const iterator& y) {
-    return y - x > 0;
-    //return x - y < 0;  what's more natural?
+    return x - y < 0;
   }
 
   friend
