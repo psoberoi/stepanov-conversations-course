@@ -3,7 +3,7 @@ CXX = clang++
 CXXFLAGS = -O3 -std=c++11
 #CXXFLAGS = -O3 -std=c++11 -stdlib=libc++ -ltcmalloc
 
-EXE = sortbench
+EXE = findbench itersetbench sortbench iterlistbench listsortbench transformbench
 
 all: $(EXE)
 
