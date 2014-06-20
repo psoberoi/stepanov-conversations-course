@@ -127,10 +127,10 @@ double time_sort(T* first, T* last, sort_algorithm<T>* a, T* buffer, size_t size
     std::copy(first, first + size, buffer);
     first += size;
     a->sort(buffer, buffer + size);
-    // if (!std::is_sorted(first, last)) {
-    //   std::cerr << "*** SORT FAILED! ***" << std::endl;
-    //   return 0;
-    // }
+    if (!std::is_sorted(buffer, buffer + size)) {
+      std::cerr << "*** SORT FAILED! ***" << std::endl;
+      return 0;
+    }
   }
   return t.stop();
 }
@@ -140,7 +140,7 @@ std::string type_description(double) { return std::string("double"); }
 template <TotallyOrdered T>
 void run_test(size_t min_size, size_t max_size) {
   time_t now = time(0);
-  std::cout << "Iterating over " << type_description(T(0))
+  std::cout << "Sorting " << type_description(T(0))
             << " from " << min_size << " up to " << max_size
             << " elements at: " << asctime(localtime(&now));
 
