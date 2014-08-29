@@ -16,7 +16,8 @@ fn unguarded_linear_insert(array: &mut [u64], last: uint, value: u64) {
 fn unguarded_insertion_sort(array: &mut [u64], first: uint, last: uint) {
   let mut i = first;
   while i != last {
-    unguarded_linear_insert(array, i, array[i]);
+    let x = array[i];
+    unguarded_linear_insert(array, i, x);
     i += 1;
   }
 }
@@ -38,7 +39,8 @@ fn insertion_sort(array: &mut [u64], first: uint, last: uint) {
   if first == last { return; }
   let mut i = first + 1;
   while i != last {
-    linear_insert(array, first, i, array[i]);
+    let x = array[i];
+    linear_insert(array, first, i, x);
     i += 1;
   }
 }
