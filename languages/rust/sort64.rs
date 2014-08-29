@@ -1,6 +1,5 @@
-extern crate rand;
 extern crate time;
-use rand::Rng;
+use std::rand::Rng;
 use std::slice::MutableCloneableVector;
 
 mod quicksort64;
@@ -25,7 +24,7 @@ fn main() {
   let mut data = Vec::from_fn(max_size, |i| { i as u64 });
   let mut buffer = data.clone();
 
-  let mut rng = rand::task_rng();
+  let mut rng = std::rand::task_rng();
   rng.shuffle(data.as_mut_slice());
 
   let mut lg = 3;
