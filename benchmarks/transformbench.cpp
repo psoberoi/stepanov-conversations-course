@@ -131,7 +131,7 @@ template <Number N>
 struct square_root
 {
   N operator()(N x, N y) {
-    return N(sqrt(abs(x + y))); 
+    return N(std::sqrt(std::abs(x + y))); 
   }
 };
 
@@ -139,7 +139,7 @@ template <Number N>
 struct cube_root_pow
 {
   N operator()(N x, N y) {
-    return N(pow(abs(x + y), 1.0/3.0)); 
+    return N(std::pow(std::abs(x + y), 1.0/3.0)); 
   }
 };
 
